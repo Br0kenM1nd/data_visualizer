@@ -1,9 +1,8 @@
-import 'package:bloc/bloc.dart';
-import 'package:data_visualizer/core/observer.dart';
-import 'package:data_visualizer/features/explorer/bloc/explorer_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'core/observer.dart';
+import 'features/data/bloc/data_bloc.dart';
 import 'pages/home_page.dart';
 
 void main() {
@@ -18,7 +17,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ExplorerBloc>(create: (_) => ExplorerBloc()),
+        BlocProvider<DataBloc>(create: (_) => DataBloc()),
       ],
       child: MaterialApp(
         title: 'Data visualizer',

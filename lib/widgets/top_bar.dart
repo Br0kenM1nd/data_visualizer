@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../features/explorer/bloc/explorer_bloc.dart';
+import '../features/data/bloc/data_bloc.dart';
 
 class TopBar extends StatelessWidget with PreferredSizeWidget {
   const TopBar({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class TopBar extends StatelessWidget with PreferredSizeWidget {
         children: [
           TextButton(
             onPressed: () {
-              context.read<ExplorerBloc>().add(const ExplorerFilePressed());
+              context.read<DataBloc>().add(const DataChooseFiles());
             },
             child: const Text('Файл'),
           ),
