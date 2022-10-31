@@ -14,8 +14,8 @@ class TempChartWidget extends StatelessWidget {
         padding: const EdgeInsets.only(top: 8),
         child: BlocBuilder<DataBloc, DataState>(
           builder: (context, state) {
-            if (state is DataFilesLoaded) {
-              return _TempChar();
+            if (state is DataParsed) {
+              return _TempChar(points: state.data[DataType.points]);
             } else {
               return const _TempChar();
             }

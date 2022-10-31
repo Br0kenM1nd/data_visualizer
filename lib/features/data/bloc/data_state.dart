@@ -13,15 +13,6 @@ class DataInitial extends DataState {
   List<Object> get props => [];
 }
 
-class DataFilesLoaded extends DataState {
-  final List<File> files;
-
-  const DataFilesLoaded(this.files);
-
-  @override
-  List<Object> get props => [files];
-}
-
 class DataParsed extends DataState {
   final Map<DataType, dynamic> data;
 

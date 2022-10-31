@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/calendar_widget.dart';
+import '../widgets/date_list_widget.dart';
 import '../widgets/temp_chart_widget.dart';
 import '../widgets/top_bar.dart';
 
@@ -25,11 +26,7 @@ class _HomePageState extends State<HomePage> {
               const CalendarWidget(),
               Row(
                 children: [
-                  Column(
-                    children: [
-                      
-                    ],
-                  ),
+                  DateListWidget(),
                 ],
               ),
             ],
@@ -39,3 +36,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
