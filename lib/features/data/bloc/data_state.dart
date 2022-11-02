@@ -1,7 +1,5 @@
 part of 'data_bloc.dart';
 
-enum DataType { names, times, points }
-
 abstract class DataState extends Equatable {
   const DataState();
 }
@@ -14,12 +12,12 @@ class DataInitial extends DataState {
 }
 
 class DataParsed extends DataState {
-  final Map<DataType, dynamic> data;
+  final List<Data> list;
 
-  const DataParsed({required this.data});
+  const DataParsed({required this.list});
 
   @override
-  List<Object?> get props => [data];
+  List<Object> get props => [list];
 }
 
 class DataError extends DataState {

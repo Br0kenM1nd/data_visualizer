@@ -1,3 +1,4 @@
+import 'package:data_visualizer/features/data/model/las.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,11 +14,16 @@ class DateListWidget extends StatelessWidget {
         if (state is DataParsed) {
           return Column(
             children: [
-              const Text('Дата и время'),
-              ...(state.data[DataType.times] as List<DateTime>).map((dateTime) {
-                return Text(dateTime.toString());
-              }),
+              if (state.list.isNotEmpty) ...[
+                const Text('Дата и время'),
+                for (int i = 0; i < state.list.length; i++)
+                  if (state.list[i] is Las)
+                    Text((state.list[i] as Las).dateTime.toString())
+              ]
 
+// ...(state.list[DataType.times] as List<DateTime>).map((dateTime) {
+//                 return Text(dateTime.toString());
+//               }),
             ],
           );
         } else {

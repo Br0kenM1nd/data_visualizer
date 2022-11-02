@@ -42,11 +42,11 @@ class LasParser implements Parser {
   }
 
   @override
-  List<FlSpot>? getPoints(FilePickerResult result) {
+  List<List<FlSpot>?> getPoints(FilePickerResult result) {
     // final names = getNames(result);
     // final mapTemps = Map.fromIterables(names, temps);
-    final temps = getTemps(getFiles(result));
-    return temps.expand((element) => element).toList();
+    return getTemps(getFiles(result));
+    // return temps.expand((element) => element).toList();
   }
 
   @visibleForTesting
