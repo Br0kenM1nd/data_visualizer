@@ -1,19 +1,19 @@
-import 'package:data_visualizer/features/data/model/las.dart';
+import 'package:data_visualizer/features/term/model/las.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 enum DataType { name, points, dateTime }
 
-enum ResultType { lasTerm, svgTerm, svgRefl }
+enum ResultType { lasTerm, svgTerm }
 
 typedef DataStruct = Map<DataType, dynamic>;
 
-class Data {
-  Data();
+class Term {
+  Term();
 
   late final String name;
   late final List<FlSpot> points;
 
-  factory Data.create({required ResultType type, required DataStruct data}) {
+  factory Term.create({required ResultType type, required DataStruct data}) {
     switch (type) {
       case ResultType.lasTerm:
         return Las(
@@ -22,9 +22,7 @@ class Data {
           dateTime: data[DataType.dateTime],
         );
       case ResultType.svgTerm:
-        return Data();
-      case ResultType.svgRefl:
-        return Data();
+        return Term();
     }
   }
 }

@@ -1,9 +1,9 @@
-import 'package:data_visualizer/features/data/model/data.dart';
-import 'package:data_visualizer/features/data/model/dated.dart';
+import 'package:data_visualizer/features/term/model/term.dart';
+import 'package:data_visualizer/features/term/model/dated.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fl_chart/src/chart/base/axis_chart/axis_chart_data.dart';
 
-class Las extends Data with Dated, EquatableMixin {
+class Las extends Term with Dated, EquatableMixin {
   @override
   final String name;
   @override

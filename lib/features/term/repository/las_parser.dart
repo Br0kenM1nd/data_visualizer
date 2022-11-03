@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:data_visualizer/features/data/repository/parser.dart';
+import 'package:data_visualizer/features/term/repository/parser.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
@@ -43,10 +43,7 @@ class LasParser implements Parser {
 
   @override
   List<List<FlSpot>?> getPoints(FilePickerResult result) {
-    // final names = getNames(result);
-    // final mapTemps = Map.fromIterables(names, temps);
     return getTemps(getFiles(result));
-    // return temps.expand((element) => element).toList();
   }
 
   @visibleForTesting

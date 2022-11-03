@@ -1,4 +1,4 @@
-import 'package:data_visualizer/features/data/repository/las_parser.dart';
+import 'package:data_visualizer/features/term/repository/las_parser.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

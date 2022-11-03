@@ -1,17 +1,17 @@
-import 'package:data_visualizer/features/data/model/las.dart';
+import 'package:data_visualizer/features/term/model/las.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../features/data/bloc/data_bloc.dart';
+import '../features/term/bloc/term_bloc.dart';
 
 class DateListWidget extends StatelessWidget {
   const DateListWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DataBloc, DataState>(
+    return BlocBuilder<TermBloc, TermState>(
       builder: (context, state) {
-        if (state is DataParsed) {
+        if (state is TermParsed) {
           return Column(
             children: [
               if (state.list.isNotEmpty) ...[

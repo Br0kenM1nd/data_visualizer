@@ -1,9 +1,9 @@
-import 'package:data_visualizer/features/data/model/data.dart';
+import 'package:data_visualizer/features/term/model/term.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../features/data/bloc/data_bloc.dart';
+import '../features/term/bloc/term_bloc.dart';
 
 class TempChartWidget extends StatelessWidget {
   const TempChartWidget({Key? key}) : super(key: key);
@@ -13,9 +13,9 @@ class TempChartWidget extends StatelessWidget {
     return Expanded(
       child: Container(
         padding: const EdgeInsets.only(top: 8),
-        child: BlocBuilder<DataBloc, DataState>(
+        child: BlocBuilder<TermBloc, TermState>(
           builder: (context, state) {
-            if (state is DataParsed) {
+            if (state is TermParsed) {
               return _TempChar(listData: state.list);
             } else {
               return const _TempChar();
@@ -28,7 +28,7 @@ class TempChartWidget extends StatelessWidget {
 }
 
 class _TempChar extends StatelessWidget {
-  final List<Data>? listData;
+  final List<Term>? listData;
 
   const _TempChar({this.listData, Key? key}) : super(key: key);
 
@@ -36,6 +36,13 @@ class _TempChar extends StatelessWidget {
   Widget build(BuildContext context) {
     return LineChart(
       LineChartData(
+        lineTouchData: LineTouchData(
+          // distanceCalculator: ,
+          touchTooltipData: LineTouchTooltipData(
+            tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+          ),
+          touchCallback: resolver,
+        ),
         titlesData: FlTitlesData(
           topTitles: AxisTitles(),
           rightTitles: AxisTitles(),
@@ -53,8 +60,7 @@ class _TempChar extends StatelessWidget {
                 spots: listData![i].points,
               ),
         ],
-        // minY: 10,
-        // maxY: 40,
+        minX: null,
       ),
       swapAnimationDuration: const Duration(milliseconds: 400),
       swapAnimationCurve: Curves.linear, // Optional
@@ -62,12 +68,25 @@ class _TempChar extends StatelessWidget {
   }
 }
 
-// class _LineWidget {
-//
-//     return LineChartBarData(
-//       color: Colors.red,
-//       dotData: FlDotData(show: false),
-//       spots: points,
-//     );
-//
-// }
+void resolver(FlTouchEvent event, LineTouchResponse? response) {
+  if (event is FlTapUpEvent) {
+    print(
+      '${("-" * 100).toString()}\n'
+          'FlTapUpEvent'
+          '\n${("-" * 100).toString()}\n',
+    );
+  } if (event is FlPanStartEvent) {
+    print(
+      '${("-" * 100).toString()}\n'
+          'FlPanStartEvent'
+          '${event.details.localPosition.toString()}'
+          '\n${("-" * 100).toString()}\n',
+    );
+  } if (event is FlPanEndEvent) {
+    print(
+      '${("-" * 100).toString()}\n'
+          'FlPanEndEvent'
+          '\n${("-" * 100).toString()}\n',
+    );
+  }
+}
