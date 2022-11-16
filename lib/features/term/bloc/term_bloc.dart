@@ -37,12 +37,14 @@ class TermBloc extends Bloc<TermEvent, TermState> {
     // todo refactor whole method
     final names = parser.getNames(result);
     final points = parser.getPoints(result);
+    final spots = parser.getSpots(result);
     final times = parser.getTimes(result);
     var list = <Term>[];
     for (int i = 0; i < names.length; i++) {
       list.add(Term.create(type: ResultType.lasTerm, data: {
         DataType.name: names[i],
         DataType.points: points[i],
+        DataType.spots: spots[i],
         DataType.dateTime: times[i],
       }));
     }

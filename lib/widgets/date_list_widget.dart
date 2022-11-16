@@ -19,11 +19,7 @@ class DateListWidget extends StatelessWidget {
                 for (int i = 0; i < state.list.length; i++)
                   if (state.list[i] is Las)
                     Text((state.list[i] as Las).dateTime.toString())
-              ]
-
-// ...(state.list[DataType.times] as List<DateTime>).map((dateTime) {
-//                 return Text(dateTime.toString());
-//               }),
+              ],
             ],
           );
         } else {
