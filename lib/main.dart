@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 import 'core/observer.dart';
 import 'features/term/bloc/term_bloc.dart';
@@ -19,10 +20,10 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider<TermBloc>(create: (_) => TermBloc()),
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         title: 'Data visualizer',
         theme: ThemeData(
-          // primarySwatch: Colors.blue,
+          primarySwatch: Colors.blue,
           colorScheme: const ColorScheme.dark(),
         ),
         home: const HomePage(),

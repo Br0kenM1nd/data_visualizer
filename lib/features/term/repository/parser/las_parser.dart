@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:data_visualizer/features/term/repository/parser.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 
-import 'common/data_source.dart';
+import '../source/data_source.dart';
+import 'parser.dart';
 
 FlSpot spotFromLine(String line) {
   final distTemp = line.split(' ');
@@ -35,6 +35,8 @@ class LasParser implements Parser {
 
   @visibleForTesting
   String formatString(String raw) {
+    raw = raw.replaceFirst('.las', '');
+    raw = raw.replaceFirst('.csv', '');
     final strings = raw.split(' ');
     final dateRaw = strings[0].split('.');
     final date = dateRaw.reversed.join('-');

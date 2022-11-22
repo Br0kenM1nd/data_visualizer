@@ -12,14 +12,28 @@ class DateListWidget extends StatelessWidget {
     return BlocBuilder<TermBloc, TermState>(
       builder: (context, state) {
         if (state is TermParsed) {
-          return Column(
+          final values = RangeValues(0, .9); //state.points.length.toDouble());
+          return Row(
             children: [
-              if (state.list.isNotEmpty) ...[
-                const Text('Дата и время'),
-                for (int i = 0; i < state.list.length; i++)
-                  if (state.list[i] is Las)
-                    Text((state.list[i] as Las).dateTime.toString())
-              ],
+              RotatedBox(
+                quarterTurns: 1,
+                child: RangeSlider(
+                  divisions: state.points.isNotEmpty ? state.points.length : null,
+                  values: values,
+                  onChanged: (_) {},
+                ),
+              ),
+              Column(
+                children: [
+                  if (state.list.isNotEmpty) ...[
+                    Text('кол-во: ${state.points.length}'),
+                    const Text('Дата и время'),
+                    for (int i = 0; i < state.list.length; i++)
+                      if (state.list[i] is Las)
+                        Text((state.list[i] as Las).dateTime.toString())
+                  ],
+                ],
+              ),
             ],
           );
         } else {

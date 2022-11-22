@@ -13,8 +13,9 @@ class TermInitial extends TermState {
 
 class TermParsed extends TermState {
   final List<Term> list;
+  final List<List<Point>> points;
 
-  const TermParsed({required this.list});
+  const TermParsed({required this.list, required this.points});
 
   @override
   List<Object> get props => [list];

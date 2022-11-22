@@ -1,53 +1,37 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
-import 'package:data_visualizer/features/term/repository/common/data_source.dart';
 import 'package:equatable/equatable.dart';
-import 'package:file_picker/file_picker.dart';
 
 import '../model/term.dart';
-import '../repository/parser.dart';
-import '../repository/las_parser.dart';
+import '../repository/term_repository.dart';
 
 part 'term_event.dart';
 
 part 'term_state.dart';
 
 class TermBloc extends Bloc<TermEvent, TermState> {
-  final DataSource source;
-  final Parser parser;
+  final TermRepository repository;
 
   TermBloc({
-    this.source = const DataSource(),
-    this.parser = const LasParser(),
+    this.repository = const TermRepository(),
   }) : super(const TermInitial()) {
     on<TermEvent>((event, emit) {});
     on<TermChooseFiles>(_filePressed);
+    on<TermChooseDate>(_chooseDate);
   }
 
   Future<void> _filePressed(
     TermChooseFiles event,
     Emitter<TermState> emit,
   ) async {
-    final result = await source.pickFiles();
-    if (result != null) emit(TermParsed(list: _buildData(result)));
+    repository.loadAllTerms();
   }
 
-  List<Term> _buildData(FilePickerResult result) {
-    // todo refactor whole method
-    final names = parser.getNames(result);
-    final points = parser.getPoints(result);
-    final spots = parser.getSpots(result);
-    final times = parser.getTimes(result);
-    var list = <Term>[];
-    for (int i = 0; i < names.length; i++) {
-      list.add(Term.create(type: ResultType.lasTerm, data: {
-        DataType.name: names[i],
-        DataType.points: points[i],
-        DataType.spots: spots[i],
-        DataType.dateTime: times[i],
-      }));
-    }
-    return list;
+  void _chooseDate(TermChooseDate event, Emitter<TermState> emit) {
+    final terms = repository.getTermsByDate(event.date);
+    final points = repository.getPointsFromTerms(terms);
+    emit(TermParsed(list: terms, points: points));
   }
 }

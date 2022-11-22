@@ -1,9 +1,7 @@
 import 'package:data_visualizer/features/term/model/term.dart';
-import 'package:data_visualizer/widgets/chart/controller.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 import '../../features/term/bloc/term_bloc.dart';
 
@@ -36,14 +34,13 @@ class _TempChar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ChartController());
+    // final controller = Get.put(ChartController());
     return LineChart(
       LineChartData(
         lineTouchData: LineTouchData(
           touchTooltipData: LineTouchTooltipData(
             tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
           ),
-          touchCallback: controller.resolver,
         ),
         titlesData: FlTitlesData(
           topTitles: AxisTitles(),

@@ -14,3 +14,9 @@ class TermChooseFiles extends TermEvent {
 class TermChooseDir extends TermEvent {
   const TermChooseDir();
 }
+
+class TermChooseDate extends TermEvent {
+  final DateTime date;
+
+  const TermChooseDate(this.date);
+}

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../features/term/bloc/term_bloc.dart';
+import '../widgets/calendar_widget.dart';
 import '../widgets/chart/term_chart.dart';
+import '../widgets/date_list_widget.dart';
 import '../widgets/top_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,23 +25,25 @@ class _HomePageState extends State<HomePage> {
           BlocBuilder<TermBloc, TermState>(
             builder: (context, state) {
               if (state is TermParsed) {
-                return TermChart(terms: state.list);
+                return TermChart(termsPoints: state.points);
               } else {
                 return const TermChart();
               }
             },
           ),
           // const TempChartWidget(),
-          // Column(
-          //   children: [
-          //     const CalendarWidget(),
-          //     Row(
-          //       children: [
-          //         DateListWidget(),
-          //       ],
-          //     ),
-          //   ],
-          // ),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                CalendarWidget(),
+                Row(
+                  children: [
+                    DateListWidget(),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
