@@ -18,7 +18,8 @@ class DateListWidget extends StatelessWidget {
               RotatedBox(
                 quarterTurns: 1,
                 child: RangeSlider(
-                  divisions: state.points.isNotEmpty ? state.points.length : null,
+                  divisions:
+                      state.points.isNotEmpty ? state.points.length : null,
                   values: values,
                   onChanged: (_) {},
                 ),
@@ -30,7 +31,13 @@ class DateListWidget extends StatelessWidget {
                     const Text('Дата и время'),
                     for (int i = 0; i < state.list.length; i++)
                       if (state.list[i] is Las)
-                        Text((state.list[i] as Las).dateTime.toString())
+                        TextButton(
+                          onPressed: () {
+                            // hide line
+                          },
+                          child:
+                              Text((state.list[i] as Las).dateTime.toString()),
+                        ),
                   ],
                 ],
               ),

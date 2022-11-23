@@ -21,7 +21,7 @@ class TermChart extends StatelessWidget {
               ? <FastLineSeries>[]
               : termsPoints!
                   .map((points) => FastLineSeries<Point, num>(
-                        animationDuration: 0,
+                        // animationDuration: 0,
                         dataSource: points,
                         xValueMapper: (point, step) => point.x,
                         yValueMapper: (point, step) => point.y,
