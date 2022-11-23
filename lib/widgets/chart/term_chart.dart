@@ -15,12 +15,12 @@ class TermChart extends StatelessWidget {
     final controller = Get.put(TermController());
     return Expanded(
       child: GestureDetector(
-        onDoubleTap: controller.zoomReset,
+        onTap: controller.zoomReset,
         child: SfCartesianChart(
           series: termsPoints == null
-              ? <LineSeries>[]
+              ? <FastLineSeries>[]
               : termsPoints!
-                  .map((points) => LineSeries<Point, num>(
+                  .map((points) => FastLineSeries<Point, num>(
                         animationDuration: 0,
                         dataSource: points,
                         xValueMapper: (point, step) => point.x,
