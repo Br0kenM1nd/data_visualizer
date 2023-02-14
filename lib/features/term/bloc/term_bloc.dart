@@ -19,18 +19,32 @@ class TermBloc extends Bloc<TermEvent, TermState> {
   }) : super(const TermInitial()) {
     on<TermEvent>((event, emit) {});
     on<TermChooseFiles>(_filePressed);
-    on<TermChooseDate>(_chooseDate);
+    on<TermChooseSingleDate>(_chooseSingleDate);
+    on<TermChooseRangeDate>(_chooseRangeDate);
   }
 
   Future<void> _filePressed(
     TermChooseFiles event,
     Emitter<TermState> emit,
-  ) async {
-    repository.loadAllTerms();
+  ) async => repository.loadAllTerms();
+
+  void _chooseSingleDate(TermChooseSingleDate event, Emitter<TermState> emit) {
+    final terms = repository.getTermsByDate(event.date);
+    final points = repository.getPointsFromTerms(terms);
+    emit(TermParsed(list: terms, points: points));
   }
 
-  void _chooseDate(TermChooseDate event, Emitter<TermState> emit) {
-    final terms = repository.getTermsByDate(event.date);
+  Future<void> _chooseRangeDate(
+    TermChooseRangeDate event,
+    Emitter<TermState> emit,
+  ) async {
+    print(
+      '${("-" * 100).toString()}\n'
+          '${event.start}\n'
+          '${event.end}\n'
+          '${("-" * 100).toString()}\n',
+    );
+    final terms = repository.getTermsByRange(event.start, event.end);
     final points = repository.getPointsFromTerms(terms);
     emit(TermParsed(list: terms, points: points));
   }

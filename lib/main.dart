@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
 import 'core/observer.dart';
@@ -17,15 +18,16 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<TermBloc>(create: (_) => TermBloc()),
-      ],
+      providers: [BlocProvider<TermBloc>(create: (_) => TermBloc())],
       child: GetMaterialApp(
+        localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+        debugShowCheckedModeBanner: false,
         title: 'Data visualizer',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-          colorScheme: const ColorScheme.dark(),
+          appBarTheme: const AppBarTheme(color: Colors.white),
+          colorScheme: const ColorScheme.light(),
         ),
+        darkTheme: ThemeData(colorScheme: const ColorScheme.dark()),
         home: const HomePage(),
       ),
     );

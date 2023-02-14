@@ -16,8 +16,11 @@ class Las extends Term with Dated, EquatableMixin {
   @override
   final DateTime dateTime;
 
+  // @override
+  // bool show;
+
   @override
-  List<Object> get props => [name, points, spots, dateTime];
+  List<Object> get props => [name, points, spots, dateTime, show];
 
   Las({
     required this.name,

@@ -15,6 +15,7 @@ class Term {
   late final String name;
   late final List<FlSpot> spots;
   late final List<Point> points;
+  var show = true;
 
   factory Term.create({required ResultType type, required DataStruct data}) {
     switch (type) {

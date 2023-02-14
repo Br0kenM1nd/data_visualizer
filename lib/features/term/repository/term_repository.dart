@@ -25,6 +25,19 @@ class TermRepository {
     return AllData.terms;
   }
 
+  List<Term> getTermsByRange(DateTime start, DateTime end) {
+    if (AllData.terms == null) return [];
+
+    List<Term> filteredTerms = [];
+
+    for (final term in AllData.terms!) {
+      if (term is Las &&
+          term.dateTime.isAfter(start) &&
+          term.dateTime.isBefore(end)) filteredTerms.add(term);
+    }
+    return filteredTerms;
+  }
+
   List<Term> getTermsByDate(DateTime date) {
     if (AllData.terms == null) return [];
     List<Term> filteredTerms = [];
