@@ -51,6 +51,7 @@ class _TempChar extends StatelessWidget {
         lineBarsData: [
           if (listData != null)
             for (int i = 0; i < listData!.length; i++)
+              if (listData![i].show)
               LineChartBarData(
                 color: Colors.red,
                 dotData: FlDotData(show: false),

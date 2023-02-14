@@ -2,7 +2,7 @@ import 'package:data_visualizer/features/term/model/las.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../features/term/bloc/term_bloc.dart';
+import '../../features/term/bloc/term_bloc.dart';
 
 class DateListWidget extends StatelessWidget {
   const DateListWidget({Key? key}) : super(key: key);
@@ -33,7 +33,7 @@ class DateListWidget extends StatelessWidget {
                       if (state.list[i] is Las)
                         TextButton(
                           onPressed: () {
-                            // hide line
+                            state.list[i].show = !state.list[i].show;
                           },
                           child:
                               Text((state.list[i] as Las).dateTime.toString()),

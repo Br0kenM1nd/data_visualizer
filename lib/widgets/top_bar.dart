@@ -22,13 +22,14 @@ class TopBar extends StatelessWidget with PreferredSizeWidget {
             },
             child: const Text('Файл'),
           ),
+          const Expanded(child: SizedBox()),
           IconButton(
-            onPressed: () => Get.changeTheme(
-                Get.isDarkMode ? ThemeData.light() : ThemeData.dark(),
-              ),
-            icon: Icon(
-              Get.isDarkMode ? Icons.dark_mode : Icons.dark_mode_outlined,
-            ),
+            onPressed: () => Get.changeThemeMode(ThemeMode.light),
+            icon: const Icon(Icons.light_mode),
+          ),
+          IconButton(
+            onPressed: () => Get.changeThemeMode(ThemeMode.dark),
+            icon: const Icon(Icons.dark_mode, color: Colors.black),
           ),
         ],
       ),

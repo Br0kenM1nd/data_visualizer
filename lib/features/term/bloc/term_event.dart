@@ -15,8 +15,21 @@ class TermChooseDir extends TermEvent {
   const TermChooseDir();
 }
 
-class TermChooseDate extends TermEvent {
+class TermChooseSingleDate extends TermEvent {
   final DateTime date;
 
-  const TermChooseDate(this.date);
+  const TermChooseSingleDate(this.date);
+
+  @override
+  List<Object> get props => [date];
+}
+
+class TermChooseRangeDate extends TermEvent {
+  final DateTime start;
+  final DateTime end;
+
+  const TermChooseRangeDate(this.start, this.end);
+
+  @override
+  List<Object> get props => [start, end];
 }

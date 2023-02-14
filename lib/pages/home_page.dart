@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../features/term/bloc/term_bloc.dart';
-import '../widgets/calendar_widget.dart';
+import '../widgets/calendar/calendar_widget.dart';
 import '../widgets/chart/term_chart.dart';
-import '../widgets/date_list_widget.dart';
+import '../widgets/date_list/date_list_widget.dart';
 import '../widgets/top_bar.dart';
 
 class HomePage extends StatefulWidget {
