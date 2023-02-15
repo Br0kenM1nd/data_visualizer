@@ -1,7 +1,15 @@
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../features/term/model/term.dart';
+
 class TermController extends GetxController {
+  TermController();
+
+  late RxList<Term> terms;
+
+  void setTerms(List<Term> allTerms) => terms = allTerms.where((term) => term.show).toList().obs;
+
   final zoom = ZoomPanBehavior(
     enableSelectionZooming: true,
     enablePinching: true,

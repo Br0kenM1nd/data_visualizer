@@ -1,42 +1,65 @@
 import 'package:data_visualizer/features/term/model/las.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 import '../../features/term/bloc/term_bloc.dart';
+import 'date_list_controller.dart';
 
-class DateListWidget extends StatelessWidget {
+class DateListWidget extends StatefulWidget {
   const DateListWidget({Key? key}) : super(key: key);
 
   @override
+  State<DateListWidget> createState() => _DateListWidgetState();
+}
+
+class _DateListWidgetState extends State<DateListWidget> {
+  late final DateListController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.put(DateListController());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // controller = Get.put(DateListController());
     return BlocBuilder<TermBloc, TermState>(
       builder: (context, state) {
-        if (state is TermParsed) {
+        if (state is TermGot) {
           final values = RangeValues(0, .9); //state.points.length.toDouble());
           return Row(
             children: [
               RotatedBox(
                 quarterTurns: 1,
                 child: RangeSlider(
-                  divisions:
-                      state.points.isNotEmpty ? state.points.length : null,
+                  divisions: state.terms.isNotEmpty ? state.terms.length : null,
                   values: values,
                   onChanged: (_) {},
                 ),
               ),
               Column(
                 children: [
-                  if (state.list.isNotEmpty) ...[
-                    Text('кол-во: ${state.points.length}'),
+                  if (state.terms.isNotEmpty) ...[
+                    Text('кол-во: ${state.terms.length}'),
                     const Text('Дата и время'),
-                    for (int i = 0; i < state.list.length; i++)
-                      if (state.list[i] is Las)
+                    for (int i = 0; i < state.terms.length; i++)
+                      if (state.terms[i] is Las)
                         TextButton(
-                          onPressed: () {
-                            state.list[i].show = !state.list[i].show;
-                          },
-                          child:
-                              Text((state.list[i] as Las).dateTime.toString()),
+                          onPressed: () => setState(() {
+                            // state.terms[i] = state.terms[i]
+                            //     .copyWith(show: !state.terms[i].show);
+                            state.terms.removeAt(i);
+                          }),
+                          child: Text(
+                            (state.terms[i] as Las).dateTime.toString(),
+                            style: TextStyle(
+                              color: state.terms[i].show
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
                         ),
                   ],
                 ],

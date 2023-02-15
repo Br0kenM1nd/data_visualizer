@@ -47,11 +47,6 @@ class LasParser implements Parser {
   }
 
   @override
-  List<List<FlSpot>?> getSpots(FilePickerResult result) {
-    return getSpotsFromFiles(getFiles(result));
-  }
-
-  @override
   List<List<Point>?> getPoints(FilePickerResult result) {
     return getPointsFromFiles(getFiles(result));
   }
@@ -60,13 +55,6 @@ class LasParser implements Parser {
   List<List<Point>> getPointsFromFiles(List<File> files) {
     return files.map((file) {
       return parsePoints(removeLasHeader(file.readAsStringSync()));
-    }).toList();
-  }
-
-  @visibleForTesting
-  List<List<FlSpot>> getSpotsFromFiles(List<File> files) {
-    return files.map((file) {
-      return parseSpots(removeLasHeader(file.readAsStringSync()));
     }).toList();
   }
 

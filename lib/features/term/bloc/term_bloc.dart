@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -29,9 +28,7 @@ class TermBloc extends Bloc<TermEvent, TermState> {
   ) async => repository.loadAllTerms();
 
   void _chooseSingleDate(TermChooseSingleDate event, Emitter<TermState> emit) {
-    final terms = repository.getTermsByDate(event.date);
-    final points = repository.getPointsFromTerms(terms);
-    emit(TermParsed(list: terms, points: points));
+    emit(TermGot(repository.getTermsByDate(event.date)));
   }
 
   Future<void> _chooseRangeDate(
@@ -45,7 +42,6 @@ class TermBloc extends Bloc<TermEvent, TermState> {
           '${("-" * 100).toString()}\n',
     );
     final terms = repository.getTermsByRange(event.start, event.end);
-    final points = repository.getPointsFromTerms(terms);
-    emit(TermParsed(list: terms, points: points));
+    emit(TermGot(terms));
   }
 }

@@ -11,14 +11,13 @@ class TermInitial extends TermState {
   List<Object> get props => [];
 }
 
-class TermParsed extends TermState {
-  final List<Term> list;
-  final List<List<Point>> points;
+class TermGot extends TermState {
+  final List<Term> terms;
 
-  const TermParsed({required this.list, required this.points});
+  const TermGot(this.terms);
 
   @override
-  List<Object> get props => [list];
+  List<Object> get props => [terms];
 }
 
 class TermError extends TermState {

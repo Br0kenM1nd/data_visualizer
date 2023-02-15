@@ -1,21 +1,20 @@
 import 'dart:math';
 
 import 'package:data_visualizer/features/term/model/las.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:equatable/equatable.dart';
 
-enum DataType { name, points, spots, dateTime }
+enum DataType { name, points, dateTime, show }
 
 enum ResultType { lasTerm, svgTerm }
 
 typedef DataStruct = Map<DataType, dynamic>;
 
-class Term {
-  Term();
+class Term extends Equatable {
+  final String name;
+  final List<Point> points;
+  final bool show;
 
-  late final String name;
-  late final List<FlSpot> spots;
-  late final List<Point> points;
-  var show = true;
+  const Term({required this.name, required this.points, required this.show});
 
   factory Term.create({required ResultType type, required DataStruct data}) {
     switch (type) {
@@ -23,11 +22,32 @@ class Term {
         return Las(
           name: data[DataType.name],
           points: data[DataType.points],
-          spots: data[DataType.spots],
           dateTime: data[DataType.dateTime],
+          show: data[DataType.show] ?? true,
         );
       case ResultType.svgTerm:
-        return Term();
+        return Term(
+          name: data[DataType.name],
+          points: data[DataType.points],
+          show: data[DataType.show] ?? true,
+        );
     }
+  }
+
+
+
+  @override
+  List<Object> get props => [name, points, show];
+
+  Term copyWith({
+    String? name,
+    List<Point>? points,
+    bool? show,
+  }) {
+    return Term(
+      name: name ?? this.name,
+      points: points ?? this.points,
+      show: show ?? this.show,
+    );
   }
 }

@@ -18,11 +18,10 @@ class CalendarWidget extends StatelessWidget {
       child: Obx(
         () => TableCalendar(
           // todo add fast year choose
-          calendarStyle: CalendarStyle(
-
-          ),
+          calendarStyle: const CalendarStyle(),
           locale: 'ru',
           weekendDays: const [],
+          // remove useless weekend gray style
           startingDayOfWeek: StartingDayOfWeek.monday,
           firstDay: controller.kFirstDay,
           lastDay: controller.kLastDay,
@@ -35,7 +34,6 @@ class CalendarWidget extends StatelessWidget {
           rangeSelectionMode: RangeSelectionMode.toggledOff,
           onDaySelected: controller.selectDay,
           onRangeSelected: controller.selectRange,
-          // onDayLongPressed: controller.longPressed,
         ),
       ),
     );

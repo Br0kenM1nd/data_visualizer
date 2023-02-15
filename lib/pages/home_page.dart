@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../features/term/bloc/term_bloc.dart';
 import '../widgets/calendar/calendar_widget.dart';
-import '../widgets/chart/term_chart.dart';
+import '../widgets/chart/term_widget.dart';
 import '../widgets/date_list/date_list_widget.dart';
 import '../widgets/top_bar.dart';
 
@@ -22,22 +20,13 @@ class _HomePageState extends State<HomePage> {
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BlocBuilder<TermBloc, TermState>(
-            builder: (context, state) {
-              if (state is TermParsed) {
-                return TermChart(termsPoints: state.points);
-              } else {
-                return const TermChart();
-              }
-            },
-          ),
-          // const TempChartWidget(),
+          TermWidget(),
           SingleChildScrollView(
             child: Column(
               children: [
-                CalendarWidget(),
+                const CalendarWidget(),
                 Row(
-                  children: [
+                  children: const [
                     DateListWidget(),
                   ],
                 ),
