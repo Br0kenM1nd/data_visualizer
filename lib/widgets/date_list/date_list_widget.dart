@@ -24,7 +24,6 @@ class _DateListWidgetState extends State<DateListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // controller = Get.put(DateListController());
     return BlocBuilder<TermBloc, TermState>(
       builder: (context, state) {
         if (state is TermGot) {
@@ -48,9 +47,10 @@ class _DateListWidgetState extends State<DateListWidget> {
                       if (state.terms[i] is Las)
                         TextButton(
                           onPressed: () => setState(() {
-                            // state.terms[i] = state.terms[i]
-                            //     .copyWith(show: !state.terms[i].show);
-                            state.terms.removeAt(i);
+                            state.terms[i] = state.terms[i]
+                                .copyWith(show: !state.terms[i].show);
+                            controller.updateTermAtIndex(state.terms[i], i);
+                            // state.terms.removeAt(i);
                           }),
                           child: Text(
                             (state.terms[i] as Las).dateTime.toString(),

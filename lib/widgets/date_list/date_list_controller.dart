@@ -1,21 +1,14 @@
 import 'package:get/get.dart';
 
-import '../../features/term/model/las.dart';
 import '../../features/term/model/term.dart';
 import '../chart/term_controller.dart';
 
 class DateListController extends GetxController {
+  late RxList<Term> terms;
 
-  RxList<Las> list = RxList<Las>();
+  void setTerms(List<Term> allTerms) => terms = allTerms.obs;
 
-  late RxList<Term> temp;
-  void updateTerms() {
-    temp = Get.find<TermController>().terms;
-    temp.assignAll(temp.where((term) => term.show == true).toList());
-    print(
-      '${("-" * 100).toString()}\n'
-          '${'aaaaa'}\n'
-          '${("-" * 100).toString()}\n',
-    );
+  void updateTermAtIndex(Term term, i) {
+    Get.find<TermController>().terms[i] = term;
   }
 }

@@ -24,38 +24,39 @@ class _TermWidgetState extends State<TermWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // controller = Get.put(TermController())..setTerms(widget.allTerms);
     return BlocBuilder<TermBloc, TermState>(
       builder: (context, state) {
         if (state is TermGot) {
-          // final terms = state.terms.where((element) => element.show);
+          controller.setTerms(state.terms);
           return Expanded(
             child: GestureDetector(
               onTap: controller.zoomReset,
-              child: SfCartesianChart(
-                series: state.terms
-                    .map((term) => FastLineSeries(
-                          // animationDuration: 0,
-                          dataSource: term.points,
-                          xValueMapper: (point, step) => point.x,
-                          yValueMapper: (point, step) => point.y,
-                          width: 2,
-                          // markerSettings: const MarkerSettings(
-                          //   isVisible: true,
-                          //   height: 4,
-                          //   width: 4,
-                          //   // shape: DataMarkerType.circle,
-                          //   borderWidth: 3,
-                          //   // borderColor: Colors.red,
-                          // ),
-                          dataLabelSettings: const DataLabelSettings(),
-                        ))
-                    .toList(),
-                primaryXAxis:
-                    NumericAxis(title: AxisTitle(text: 'Расстояние, М')),
-                primaryYAxis:
-                    NumericAxis(title: AxisTitle(text: 'Температура, °С')),
-                zoomPanBehavior: controller.zoom,
+              child: Obx(
+                () => SfCartesianChart(
+                  series: controller.terms
+                      .map((term) => FastLineSeries(
+                            // animationDuration: 0,
+                            dataSource: term.points,
+                            xValueMapper: (point, step) => term.show ? point.x : 0,
+                            yValueMapper: (point, step) => term.show ? point.y : 0,
+                            width: 2,
+                            // markerSettings: const MarkerSettings(
+                            //   isVisible: true,
+                            //   height: 4,
+                            //   width: 4,
+                            //   // shape: DataMarkerType.circle,
+                            //   borderWidth: 3,
+                            //   // borderColor: Colors.red,
+                            // ),
+                            dataLabelSettings: const DataLabelSettings(),
+                          ))
+                      .toList(),
+                  primaryXAxis:
+                      NumericAxis(title: AxisTitle(text: 'Расстояние, М')),
+                  primaryYAxis:
+                      NumericAxis(title: AxisTitle(text: 'Температура, °С')),
+                  zoomPanBehavior: controller.zoom,
+                ),
               ),
             ),
           );

@@ -8,7 +8,7 @@ class TermController extends GetxController {
 
   late RxList<Term> terms;
 
-  void setTerms(List<Term> allTerms) => terms = allTerms.where((term) => term.show).toList().obs;
+  void setTerms(List<Term> allTerms) => terms = allTerms.obs;
 
   final zoom = ZoomPanBehavior(
     enableSelectionZooming: true,
