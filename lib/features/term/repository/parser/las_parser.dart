@@ -2,17 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:file_picker/file_picker.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 
 import '../source/data_source.dart';
 import 'parser.dart';
-
-FlSpot spotFromLine(String line) {
-  final distTemp = line.split(' ');
-  return FlSpot(double.parse(distTemp.first), double.parse(distTemp.last));
-}
 
 Point pointFromLine(String line) {
   final distTemp = line.split(' ');
@@ -25,11 +18,13 @@ class LasParser implements Parser {
   const LasParser({this.source = const DataSource()});
 
   @override
-  List<String?> getNames(FilePickerResult result) => result.names;
+  List<String?> getNames(List<File> files) {
+    return files.map((file) => file.uri.pathSegments.last).toList();
+  }
 
   @override
-  List<DateTime> getTimes(FilePickerResult result) {
-    final names = getNames(result);
+  List<DateTime> getTimes(List<File> files) {
+    final names = getNames(files);
     return names.map((name) => DateTime.parse(formatString(name!))).toList();
   }
 
@@ -47,8 +42,8 @@ class LasParser implements Parser {
   }
 
   @override
-  List<List<Point>?> getPoints(FilePickerResult result) {
-    return getPointsFromFiles(getFiles(result));
+  List<List<Point>?> getPoints(List<File> files) {
+    return getPointsFromFiles(files);
   }
 
   @visibleForTesting
@@ -56,11 +51,6 @@ class LasParser implements Parser {
     return files.map((file) {
       return parsePoints(removeLasHeader(file.readAsStringSync()));
     }).toList();
-  }
-
-  @visibleForTesting
-  List<File> getFiles(FilePickerResult result) {
-    return result.paths.map((file) => File(file!)).toList();
   }
 
   @visibleForTesting
@@ -72,10 +62,5 @@ class LasParser implements Parser {
   @visibleForTesting
   List<Point> parsePoints(List<String> lines) {
     return lines.map((line) => pointFromLine(line)).toList();
-  }
-
-  @visibleForTesting
-  List<FlSpot> parseSpots(List<String> lines) {
-    return lines.map((line) => spotFromLine(line)).toList();
   }
 }

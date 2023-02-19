@@ -1,9 +1,10 @@
-import 'package:data_visualizer/features/term/model/las.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import '../../features/term/bloc/term_bloc.dart';
+import '../../features/term/model/las.dart';
+import '../../features/term/model/term.dart';
 import 'date_list_controller.dart';
 
 class DateListWidget extends StatefulWidget {
@@ -16,48 +17,72 @@ class DateListWidget extends StatefulWidget {
 class _DateListWidgetState extends State<DateListWidget> {
   late final DateListController controller;
 
-  @override
-  void initState() {
-    super.initState();
-    controller = Get.put(DateListController());
+  double rangeEnd(List<Term> terms) {
+    var activeTerms = terms.where((term) => term.show).length;
+    return activeTerms / terms.length;
   }
+
+  double _minValue = 0;
+  late double _maxValue;
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(DateListController());
     return BlocBuilder<TermBloc, TermState>(
       builder: (context, state) {
-        if (state is TermGot) {
-          final values = RangeValues(0, .9); //state.points.length.toDouble());
+        if (state is TermGot && state.terms.isNotEmpty) {
+          final terms = state.terms;
           return Row(
             children: [
-              RotatedBox(
-                quarterTurns: 1,
-                child: RangeSlider(
-                  divisions: state.terms.isNotEmpty ? state.terms.length : null,
-                  values: values,
-                  onChanged: (_) {},
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: 0,
+                  maxHeight: terms.length * 30,
+                ),
+                child: RotatedBox(
+                  quarterTurns: 1,
+                  child: RangeSlider(
+                    divisions: terms.isNotEmpty ? terms.length : null,
+                    values: RangeValues(_minValue, _maxValue),
+                    min: 0,
+                    max: terms.length.toDouble(),
+                    onChanged: (range) {
+                      setState(() {
+                        _minValue = range.start;
+                        _maxValue = range.end;
+                        // for (int i = 0; i < _minValue; i++) {
+                        //   terms[i] = terms[i].change();
+                        // }
+                        // for (int i = terms.length - 1; i > _maxValue; i--) {
+                        //   terms[i] = terms[i].change();
+                        // }
+                      });
+                    },
+                  ),
                 ),
               ),
               Column(
                 children: [
-                  if (state.terms.isNotEmpty) ...[
-                    Text('кол-во: ${state.terms.length}'),
+                  if (terms.isNotEmpty) ...[
+                    Text('кол-во: ${terms.length}'),
                     const Text('Дата и время'),
-                    for (int i = 0; i < state.terms.length; i++)
-                      if (state.terms[i] is Las)
+                    for (int i = 0; i < terms.length; i++)
+                      if (terms[i] is Las)
                         TextButton(
                           onPressed: () => setState(() {
-                            state.terms[i] = state.terms[i]
-                                .copyWith(show: !state.terms[i].show);
-                            controller.updateTermAtIndex(state.terms[i], i);
-                            // state.terms.removeAt(i);
+                            terms[i] = terms[i].copyWith(show: !terms[i].show);
+                            controller.updateTermAtIndex(terms[i], i);
+                            // terms.removeAt(i);
                           }),
                           child: Text(
-                            (state.terms[i] as Las).dateTime.toString(),
+                            (terms[i] as Las).dateTime.toString(),
                             style: TextStyle(
-                              color: state.terms[i].show
-                                  ? Colors.white
-                                  : Colors.black,
+                              // color: terms[i].show
+                              //     ? Colors.white
+                              //     : Colors.black,
+                              decoration: terms[i].show
+                                  ? null
+                                  : TextDecoration.lineThrough,
                             ),
                           ),
                         ),

@@ -28,14 +28,21 @@ class Las extends Term with Dated {
     List<Point>? points,
     DateTime? dateTime,
     bool? show,
-  }) {
-    return Las(
-      name: name ?? this.name,
-      points: points ?? this.points,
-      dateTime: dateTime ?? this.dateTime,
-      show: show ?? this.show,
-    );
-  }
+  }) =>
+      Las(
+        name: name ?? this.name,
+        points: points ?? this.points,
+        dateTime: dateTime ?? this.dateTime,
+        show: show ?? this.show,
+      );
+
+  @override
+  Las change() => Las(
+        name: name,
+        points: points,
+        dateTime: dateTime,
+        show: !show,
+      );
 
   @override
   List<Object> get props => [name, points, show, dateTime];

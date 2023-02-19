@@ -43,11 +43,15 @@ class Term extends Equatable {
     String? name,
     List<Point>? points,
     bool? show,
-  }) {
-    return Term(
+  }) => Term(
       name: name ?? this.name,
       points: points ?? this.points,
       show: show ?? this.show,
     );
-  }
+
+  Term change() => Term(
+    name: name,
+    points: points,
+    show: !show,
+  );
 }

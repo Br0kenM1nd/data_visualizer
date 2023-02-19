@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:data_visualizer/features/term/model/las.dart';
 import 'package:data_visualizer/features/term/repository/all_data.dart';
-import 'package:file_picker/file_picker.dart';
 
 import '../model/term.dart';
 import 'parser/las_parser.dart';
@@ -17,7 +18,9 @@ class TermRepository {
   });
 
   Future<List<Term>?> loadAllTerms() async {
-    final result = await source.pickFiles();
+    // await source.pickDirs();
+    // final result = await source.pickFiles();
+    final result = await source.pickDirs();
     if (result == null) return null;
     AllData.terms = _buildData(result);
     return AllData.terms;
@@ -47,7 +50,7 @@ class TermRepository {
     return filteredTerms;
   }
 
-  List<Term> _buildData(FilePickerResult result) {
+  List<Term> _buildData(List<File> result) {
     final names = parser.getNames(result);
     final points = parser.getPoints(result);
     final times = parser.getTimes(result);
