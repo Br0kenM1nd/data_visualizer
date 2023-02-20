@@ -10,13 +10,11 @@ class DataSource {
   Future<List<File>?> pickDirs() async {
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
     if (selectedDirectory == null) return null;
-    List<File> files = [];
     Directory directory = Directory(selectedDirectory);
     List<FileSystemEntity> entities = directory.listSync(recursive: true);
-    for (FileSystemEntity entity in entities) {
-      if (entity is File && _isLas(entity)) files.add(entity);
-    }
-    return files;
+    return [for (FileSystemEntity entity in entities)
+      if (entity is File && _isLas(entity)) (entity)
+    ];
   }
 
   bool _isLas(FileSystemEntity entity) => entity.path.split('.').last == 'las';

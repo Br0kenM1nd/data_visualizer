@@ -23,7 +23,7 @@ class _DateListWidgetState extends State<DateListWidget> {
   }
 
   double _minValue = 0;
-  late double _maxValue;
+  double _maxValue = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +50,20 @@ class _DateListWidgetState extends State<DateListWidget> {
                       setState(() {
                         _minValue = range.start;
                         _maxValue = range.end;
-                        // for (int i = 0; i < _minValue; i++) {
-                        //   terms[i] = terms[i].change();
-                        // }
-                        // for (int i = terms.length - 1; i > _maxValue; i--) {
-                        //   terms[i] = terms[i].change();
-                        // }
+                        print(
+                          '${("-" * 100).toString()}\n'
+                          '${_maxValue}\n'
+                          '${("-" * 100).toString()}\n',
+                        );
+                        for (int i = 0; i < terms.length; i++) {
+                          if (_minValue <= i && i < _maxValue) {
+                            terms[i] = terms[i].copyWith(show: true);
+                            controller.updateTermAtIndex(terms[i], i);
+                          } else {
+                            terms[i] = terms[i].copyWith(show: false);
+                            controller.updateTermAtIndex(terms[i], i);
+                          }
+                        }
                       });
                     },
                   ),
@@ -72,17 +80,11 @@ class _DateListWidgetState extends State<DateListWidget> {
                           onPressed: () => setState(() {
                             terms[i] = terms[i].copyWith(show: !terms[i].show);
                             controller.updateTermAtIndex(terms[i], i);
-                            // terms.removeAt(i);
                           }),
                           child: Text(
                             (terms[i] as Las).dateTime.toString(),
                             style: TextStyle(
-                              // color: terms[i].show
-                              //     ? Colors.white
-                              //     : Colors.black,
-                              decoration: terms[i].show
-                                  ? null
-                                  : TextDecoration.lineThrough,
+                              color: terms[i].show ? null : Colors.grey,
                             ),
                           ),
                         ),
