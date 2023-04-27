@@ -1,16 +1,17 @@
 # data_visualizer
 
-A new Flutter project.
+Flutter project for data visualization.
 
-## Getting Started
+For now support only .las files.
 
-This project is a starting point for a Flutter application.
+Used for presentation data from DTS:
 
-A few resources to get you started if this is your first Flutter project:
+![img.png](img.png)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### How to use:
+1. Choose file/files/directory (files must be formatted as 17.09.2020 11-26-55 averaged.las)
+2. Choose date on calendar.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+If you want some additional functionality, you can contact me:
+email: ivanivan120@gmail.com
+telegram: https://t.me/Ivan97IV

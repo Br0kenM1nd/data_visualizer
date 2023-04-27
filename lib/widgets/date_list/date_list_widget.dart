@@ -15,7 +15,18 @@ class DateListWidget extends StatefulWidget {
 }
 
 class _DateListWidgetState extends State<DateListWidget> {
-  late final DateListController controller;
+  static const colors = [
+    Color.fromRGBO(75, 135, 185, 1),
+    Color.fromRGBO(192, 108, 132, 1),
+    Color.fromRGBO(246, 114, 128, 1),
+    Color.fromRGBO(248, 177, 149, 1),
+    Color.fromRGBO(116, 180, 155, 1),
+    Color.fromRGBO(0, 168, 181, 1),
+    Color.fromRGBO(73, 76, 162, 1),
+    Color.fromRGBO(255, 205, 96, 1),
+    Color.fromRGBO(255, 240, 219, 1),
+    Color.fromRGBO(238, 238, 238, 1)
+  ];
 
   double rangeEnd(List<Term> terms) {
     var activeTerms = terms.where((term) => term.show).length;
@@ -50,21 +61,16 @@ class _DateListWidgetState extends State<DateListWidget> {
                       setState(() {
                         _minValue = range.start;
                         _maxValue = range.end;
-                        print(
-                          '${("-" * 100).toString()}\n'
-                          '${_maxValue}\n'
-                          '${("-" * 100).toString()}\n',
-                        );
-                        for (int i = 0; i < terms.length; i++) {
-                          if (_minValue <= i && i < _maxValue) {
-                            terms[i] = terms[i].copyWith(show: true);
-                            controller.updateTermAtIndex(terms[i], i);
-                          } else {
-                            terms[i] = terms[i].copyWith(show: false);
-                            controller.updateTermAtIndex(terms[i], i);
-                          }
-                        }
                       });
+                      for (int i = 0; i < terms.length; i++) {
+                        if (_minValue <= i && i < _maxValue) {
+                          terms[i] = terms[i].copyWith(show: true);
+                          controller.updateTermAtIndex(terms[i], i);
+                        } else {
+                          terms[i] = terms[i].copyWith(show: false);
+                          controller.updateTermAtIndex(terms[i], i);
+                        }
+                      }
                     },
                   ),
                 ),
@@ -81,11 +87,20 @@ class _DateListWidgetState extends State<DateListWidget> {
                             terms[i] = terms[i].copyWith(show: !terms[i].show);
                             controller.updateTermAtIndex(terms[i], i);
                           }),
-                          child: Text(
-                            (terms[i] as Las).dateTime.toString(),
-                            style: TextStyle(
-                              color: terms[i].show ? null : Colors.grey,
-                            ),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 8,
+                                backgroundColor: colors[i % colors.length],
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                (terms[i] as Las).dateTime.toString(),
+                                style: TextStyle(
+                                  color: terms[i].show ? null : Colors.grey,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                   ],
