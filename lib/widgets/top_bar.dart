@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../features/term/bloc/term_bloc.dart';
 
-class TopBar extends StatelessWidget with PreferredSizeWidget {
+class TopBar extends StatelessWidget implements PreferredSizeWidget {
   const TopBar({Key? key}) : super(key: key);
 
   @override

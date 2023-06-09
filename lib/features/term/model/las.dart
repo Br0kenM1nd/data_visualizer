@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:data_visualizer/features/term/model/term.dart';
 import 'package:data_visualizer/features/term/model/dated.dart';
 
-class Las extends Term with Dated {
+class Las extends Term implements Dated {
   @override
   final String name;
   @override
@@ -46,4 +46,7 @@ class Las extends Term with Dated {
 
   @override
   List<Object> get props => [name, points, show, dateTime];
+
+  @override
+  set dateTime(DateTime time) => dateTime = time;
 }

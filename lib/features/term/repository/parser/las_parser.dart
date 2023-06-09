@@ -3,13 +3,22 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 
 import '../source/data_source.dart';
 import 'parser.dart';
 
 Point pointFromLine(String line) {
   final distTemp = line.split(' ');
-  return Point(double.parse(distTemp.first), double.parse(distTemp.last));
+  try {
+    final numberFormat = NumberFormat.decimalPattern('en_US');
+    double x = numberFormat.parse(distTemp.first).toDouble();
+    double y = numberFormat.parse(distTemp.last).toDouble();
+    return Point(x, y);
+  } catch (e) {
+    print("Error parsing line: $line !");
+    return const Point(0, 0);
+  }
 }
 
 class LasParser implements Parser {
