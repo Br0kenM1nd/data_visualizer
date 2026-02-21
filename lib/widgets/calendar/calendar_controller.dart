@@ -56,7 +56,6 @@ class CalendarController extends GetxController {
     print(
       '${("-" * 100).toString()}\n'
       '${day}\n'
-      '${_}\n'
       '${("-" * 100).toString()}\n',
     );
     stateSelectedDay.value = day;
