@@ -5,18 +5,13 @@ import '../widgets/chart/term_widget.dart';
 import '../widgets/date_list/date_list_widget.dart';
 import '../widgets/top_bar.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const TopBar(),
+    return const Scaffold(
+      appBar: TopBar(),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -24,12 +19,8 @@ class _HomePageState extends State<HomePage> {
           SingleChildScrollView(
             child: Column(
               children: [
-                const CalendarWidget(),
-                Row(
-                  children: const [
-                    DateListWidget(),
-                  ],
-                ),
+                CalendarWidget(),
+                Row(children: [DateListWidget()]),
               ],
             ),
           ),
@@ -38,5 +29,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-

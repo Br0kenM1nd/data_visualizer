@@ -1,18 +1,21 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../features/term/bloc/term_bloc.dart';
+import '../../core/logger/logger.dart';
+import '../../features/term/presentation/controllers/term_controller.dart';
 
 class CalendarController extends GetxController {
-  final bloc = BlocProvider.of<TermBloc>(Get.context!);
+  CalendarController({TermController? termController})
+    : _termController = termController ?? Get.find<TermController>();
+
+  final TermController _termController;
 
   var calendarFormat = CalendarFormat.month.obs;
   final kFirstDay = DateTime(2000);
   final kLastDay = DateTime(2100);
 
-  // Can be toggled on/off by long pressing a date
-  var rangeSelectionMode = RangeSelectionMode.toggledOn.obs;
+  // Long press enables range selection mode.
+  var rangeSelectionMode = RangeSelectionMode.toggledOff.obs;
   var stateFocusedDay = DateTime.now().obs;
   var stateSelectedDay = Rxn<DateTime>();
   var rangeStart = Rxn<DateTime>();
@@ -20,26 +23,42 @@ class CalendarController extends GetxController {
 
   bool compareDays(DateTime day) => isSameDay(day, stateSelectedDay.value);
 
+  DateTime get activeDate => stateSelectedDay.value ?? stateFocusedDay.value;
+
+  @override
+  void onInit() {
+    super.onInit();
+    final now = DateTime.now();
+    stateFocusedDay.value = now;
+    stateSelectedDay.value = now;
+  }
+
   void changeFormat(CalendarFormat format) {
     if (calendarFormat.value != format) calendarFormat.value = format;
   }
 
   void selectDay(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(stateSelectedDay.value, selectedDay)) {
-      rangeStart.value = null;
-      rangeEnd.value = null;
       stateSelectedDay.value = selectedDay;
       stateFocusedDay.value = focusedDay;
-      bloc.add(TermChooseSingleDate(selectedDay));
+
+      if (rangeSelectionMode.value == RangeSelectionMode.toggledOff) {
+        rangeStart.value = null;
+        rangeEnd.value = null;
+        _termController.selectSingleDate(selectedDay);
+      }
     }
   }
 
-  void selectRange(DateTime? _, DateTime? __, DateTime focusedDay) {
-    if (stateSelectedDay.value?.isBefore(focusedDay) ?? false) {
-      rangeStart.value = stateSelectedDay.value;
-      rangeEnd.value = focusedDay;
-      stateFocusedDay.value = focusedDay;
-      bloc.add(TermChooseRangeDate(stateSelectedDay.value!, focusedDay));
+  void selectRange(DateTime? start, DateTime? end, DateTime focusedDay) {
+    stateSelectedDay.value = null;
+    stateFocusedDay.value = focusedDay;
+    rangeStart.value = start;
+    rangeEnd.value = end;
+
+    if (start != null && end != null) {
+      _termController.selectRange(start, end);
+      rangeSelectionMode.value = RangeSelectionMode.toggledOff;
     }
   }
 
@@ -49,15 +68,28 @@ class CalendarController extends GetxController {
   //   rangeStart.value = start;
   //   rangeEnd.value = end;
   //   rangeSelectionMode.value = RangeSelectionMode.toggledOn;
-  //   if (start != null && end != null) bloc.add(TermChooseRangeDate(start, end));
+  //   if (start != null && end != null) _termController.selectRange(start, end);
   // }
 
-  void longPressed(DateTime day, DateTime _) {
-    print(
-      '${("-" * 100).toString()}\n'
-      '${day}\n'
-      '${("-" * 100).toString()}\n',
-    );
+  void longPressed(DateTime day, DateTime focusedDay) {
+    appLogger.d('Range anchor day selected: $day');
+    rangeSelectionMode.value = RangeSelectionMode.toggledOn;
     stateSelectedDay.value = day;
+    stateFocusedDay.value = focusedDay;
+  }
+
+  void resetSelection() {
+    rangeSelectionMode.value = RangeSelectionMode.toggledOff;
+    stateSelectedDay.value = null;
+    rangeStart.value = null;
+    rangeEnd.value = null;
+  }
+
+  void setActiveDate(DateTime date) {
+    stateSelectedDay.value = date;
+    stateFocusedDay.value = date;
+    rangeSelectionMode.value = RangeSelectionMode.toggledOff;
+    rangeStart.value = null;
+    rangeEnd.value = null;
   }
 }

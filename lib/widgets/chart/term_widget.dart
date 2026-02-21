@@ -1,82 +1,48 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../features/term/bloc/term_bloc.dart';
-import 'term_controller.dart';
+import '../../features/term/presentation/controllers/term_controller.dart';
 
-class TermWidget extends StatefulWidget {
-  const TermWidget({Key? key}) : super(key: key);
+class TermWidget extends StatelessWidget {
+  const TermWidget({super.key});
 
-  @override
-  State<TermWidget> createState() => _TermWidgetState();
-}
-
-class _TermWidgetState extends State<TermWidget> {
-  late final TermController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = Get.put(TermController());
-  }
+  static const String xAxisTitle = 'Расстояние, М';
+  static const String yAxisTitle = 'Температура, °С';
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TermBloc, TermState>(
-      builder: (context, state) {
-        if (state is TermGot) {
-          controller.setTerms(state.terms);
-          return Expanded(
-            child: GestureDetector(
-              onTap: controller.zoomReset,
-              child: Obx(
-                () => SfCartesianChart(
-                  series: controller.terms
-                      .map((term) => FastLineSeries(
-                            // animationDuration: 0,
-                            dataSource: term.points,
-                            xValueMapper: (point, step) => term.show ? point.x : 0,
-                            yValueMapper: (point, step) => term.show ? point.y : 0,
-                            width: 2,
-                            // markerSettings: const MarkerSettings(
-                            //   isVisible: true,
-                            //   height: 4,
-                            //   width: 4,
-                            //   // shape: DataMarkerType.circle,
-                            //   borderWidth: 3,
-                            //   // borderColor: Colors.red,
-                            // ),
-                            dataLabelSettings: const DataLabelSettings(),
-                          ))
-                      .toList(),
-                  primaryXAxis:
-                      NumericAxis(title: AxisTitle(text: 'Расстояние, М')),
-                  primaryYAxis:
-                      NumericAxis(title: AxisTitle(text: 'Температура, °С')),
-                  zoomPanBehavior: controller.zoom,
-                ),
-              ),
-            ),
-          );
-        } else {
-          return const EmptyChart();
-        }
-      },
-    );
-  }
-}
+    final controller = Get.find<TermController>();
 
-class EmptyChart extends StatelessWidget {
-  const EmptyChart({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
     return Expanded(
-      child: SfCartesianChart(
-        primaryXAxis: NumericAxis(title: AxisTitle(text: 'Расстояние, М')),
-        primaryYAxis: NumericAxis(title: AxisTitle(text: 'Температура, °С')),
+      child: GestureDetector(
+        onTap: controller.resetZoom,
+        child: Obx(() {
+          if (controller.status.value == TermViewStatus.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final visibleTerms = controller.terms
+              .where((term) => term.show)
+              .toList(growable: false);
+
+          return SfCartesianChart(
+            series: visibleTerms
+                .map(
+                  (term) => FastLineSeries<Point<double>, double>(
+                    dataSource: term.points,
+                    xValueMapper: (point, _) => point.x,
+                    yValueMapper: (point, _) => point.y,
+                  ),
+                )
+                .toList(growable: false),
+            primaryXAxis: const NumericAxis(title: AxisTitle(text: xAxisTitle)),
+            primaryYAxis: const NumericAxis(title: AxisTitle(text: yAxisTitle)),
+            zoomPanBehavior: controller.zoom,
+          );
+        }),
       ),
     );
   }
