@@ -67,7 +67,7 @@ class DataSource {
       return <File>[];
     }
 
-    return result.paths.whereType<String>().map((path) => File(path)).toList(growable: false);
+    return result.paths.whereType<String>().map(File.new).toList(growable: false);
   }
 
   bool _isLas(String path) {
