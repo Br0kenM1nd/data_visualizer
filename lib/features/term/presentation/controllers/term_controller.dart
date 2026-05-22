@@ -10,22 +10,12 @@ import '../../domain/use_cases/load_terms_use_case.dart';
 
 enum TermViewStatus { idle, loading, loaded, empty, error }
 
-class TermController extends GetxController {
-  TermController({
-    required LoadTermsUseCase loadTermsUseCase,
-    required LoadLastDirectoryTermsUseCase loadLastDirectoryTermsUseCase,
-    required GetTermsByDateUseCase getTermsByDateUseCase,
-    required GetTermsByRangeUseCase getTermsByRangeUseCase,
-  }) : _loadTermsUseCase = loadTermsUseCase,
-       _loadLastDirectoryTermsUseCase = loadLastDirectoryTermsUseCase,
-       _getTermsByDateUseCase = getTermsByDateUseCase,
-       _getTermsByRangeUseCase = getTermsByRangeUseCase;
-
-  final LoadTermsUseCase _loadTermsUseCase;
-  final LoadLastDirectoryTermsUseCase _loadLastDirectoryTermsUseCase;
-  final GetTermsByDateUseCase _getTermsByDateUseCase;
-  final GetTermsByRangeUseCase _getTermsByRangeUseCase;
-
+class TermController({
+  required final LoadTermsUseCase _loadTermsUseCase,
+  required final LoadLastDirectoryTermsUseCase _loadLastDirectoryTermsUseCase,
+  required final GetTermsByDateUseCase _getTermsByDateUseCase,
+  required final GetTermsByRangeUseCase _getTermsByRangeUseCase,
+}) extends GetxController {
   final Rx<TermViewStatus> status = TermViewStatus.idle.obs;
   final RxnString errorMessage = RxnString();
   final RxList<Term> terms = <Term>[].obs;
@@ -40,9 +30,7 @@ class TermController extends GetxController {
     await loadTermsWithInitialDateFilter();
   }
 
-  Future<void> loadTermsWithInitialDateFilter({
-    DateTime? initialFilterDate,
-  }) async {
+  Future<void> loadTermsWithInitialDateFilter({DateTime? initialFilterDate}) async {
     status.value = TermViewStatus.loading;
     errorMessage.value = null;
 
@@ -58,9 +46,7 @@ class TermController extends GetxController {
       final filtered = _getTermsByDateUseCase(filterDate);
       final prepared = _prepareInitialDayVisibility(filtered);
       terms.assignAll(prepared);
-      status.value = prepared.isEmpty
-          ? TermViewStatus.empty
-          : TermViewStatus.loaded;
+      status.value = prepared.isEmpty ? TermViewStatus.empty : TermViewStatus.loaded;
     } on Object catch (error, stackTrace) {
       appLogger.e('Failed to load terms', error: error, stackTrace: stackTrace);
       errorMessage.value = error.toString();
@@ -81,9 +67,7 @@ class TermController extends GetxController {
       final filtered = _getTermsByDateUseCase(filterDate);
       final prepared = _prepareInitialDayVisibility(filtered);
       terms.assignAll(prepared);
-      status.value = prepared.isEmpty
-          ? TermViewStatus.empty
-          : TermViewStatus.loaded;
+      status.value = prepared.isEmpty ? TermViewStatus.empty : TermViewStatus.loaded;
     } on Object catch (error, stackTrace) {
       appLogger.w(
         'Skipping auto-load from last directory due to error',
@@ -98,17 +82,13 @@ class TermController extends GetxController {
     final filtered = _getTermsByDateUseCase(selectedDay);
     final prepared = _prepareInitialDayVisibility(filtered);
     terms.assignAll(prepared);
-    status.value = prepared.isEmpty
-        ? TermViewStatus.empty
-        : TermViewStatus.loaded;
+    status.value = prepared.isEmpty ? TermViewStatus.empty : TermViewStatus.loaded;
   }
 
   void selectRange(DateTime start, DateTime end) {
     final filtered = _getTermsByRangeUseCase(start, end);
     terms.assignAll(filtered);
-    status.value = filtered.isEmpty
-        ? TermViewStatus.empty
-        : TermViewStatus.loaded;
+    status.value = filtered.isEmpty ? TermViewStatus.empty : TermViewStatus.loaded;
   }
 
   void toggleVisibility(int index) {
@@ -148,8 +128,7 @@ class TermController extends GetxController {
     }
   }
 
-  bool get areAllThermogramsVisible =>
-      terms.isNotEmpty && terms.every((term) => term.show);
+  bool get areAllThermogramsVisible => terms.isNotEmpty && terms.every((term) => term.show);
 
   void resetZoom() => zoom.reset();
 

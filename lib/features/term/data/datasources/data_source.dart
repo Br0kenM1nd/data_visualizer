@@ -34,7 +34,7 @@ class DataSource {
     return DirectorySelection(path: selectedDirectory, files: files);
   }
 
-  Future<String?> pickDirectoryPath() => FilePicker.platform.getDirectoryPath();
+  Future<String?> pickDirectoryPath() => FilePicker.getDirectoryPath();
 
   Future<List<File>> getLasFilesFromDirectory(String directoryPath) async {
     final directory = Directory(directoryPath);
@@ -56,7 +56,7 @@ class DataSource {
   }
 
   Future<List<File>> pickFiles() async {
-    final result = await FilePicker.platform.pickFiles(
+    final result = await FilePicker.pickFiles(
       allowMultiple: true,
       type: FileType.custom,
       allowedExtensions: <String>['las'],
@@ -67,10 +67,7 @@ class DataSource {
       return <File>[];
     }
 
-    return result.paths
-        .whereType<String>()
-        .map((path) => File(path))
-        .toList(growable: false);
+    return result.paths.whereType<String>().map((path) => File(path)).toList(growable: false);
   }
 
   bool _isLas(String path) {

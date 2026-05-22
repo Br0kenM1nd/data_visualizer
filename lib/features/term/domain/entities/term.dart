@@ -10,11 +10,7 @@ class Term extends Equatable {
   final bool show;
 
   Term copyWith({String? name, List<Point<double>>? points, bool? show}) {
-    return Term(
-      name: name ?? this.name,
-      points: points ?? this.points,
-      show: show ?? this.show,
-    );
+    return Term(name: name ?? this.name, points: points ?? this.points, show: show ?? this.show);
   }
 
   Term toggleVisibility() => copyWith(show: !show);

@@ -11,8 +11,7 @@ class DateListController extends GetxController {
   void filterTermsByIndexRange(int startIndex, int endIndex) =>
       _termController.filterTermsByIndexRange(startIndex, endIndex);
 
-  void toggleTermVisibility(int index) =>
-      _termController.toggleVisibility(index);
+  void toggleTermVisibility(int index) => _termController.toggleVisibility(index);
 
   void toggleAllDayThermograms() => _termController.toggleAllDayThermograms();
 }
