@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:math';
@@ -41,9 +42,7 @@ class LasParser implements Parser {
 
     return rawData
         .map(
-          (series) => series
-              .map((pair) => Point<double>(pair[0], pair[1]))
-              .toList(growable: false),
+          (series) => series.map((pair) => Point<double>(pair[0], pair[1])).toList(growable: false),
         )
         .toList(growable: false);
   }
@@ -67,16 +66,22 @@ class LasParser implements Parser {
   }
 }
 
-List<List<List<double>>> _parsePointsByPaths(List<String> paths) {
-  return paths.map((path) => _parseSingleFile(path)).toList(growable: false);
+Future<List<List<List<double>>>> _parsePointsByPaths(List<String> paths) async {
+  final parsed = <List<List<double>>>[];
+  for (final path in paths) {
+    parsed.add(await _parseSingleFile(path));
+  }
+
+  return parsed;
 }
 
-List<List<double>> _parseSingleFile(String path) {
-  final lines = File(path).readAsLinesSync();
+Future<List<List<double>>> _parseSingleFile(String path) async {
   var dataStarted = false;
   final parsed = <List<double>>[];
 
-  for (final rawLine in lines) {
+  final lines = File(path).openRead().transform(utf8.decoder).transform(const LineSplitter());
+
+  await for (final rawLine in lines) {
     final line = rawLine.trim();
     if (line.isEmpty) {
       continue;

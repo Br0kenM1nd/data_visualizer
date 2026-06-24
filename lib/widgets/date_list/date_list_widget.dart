@@ -27,6 +27,8 @@ class _DateListWidgetState extends State<DateListWidget> {
     Color.fromRGBO(238, 238, 238, 1),
   ];
 
+  RangeValues? _pendingRange;
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.isRegistered<DateListController>()
@@ -42,6 +44,8 @@ class _DateListWidgetState extends State<DateListWidget> {
 
       final (sliderStart, sliderEnd) = _sliderRangeForTerms(terms);
       final sliderMax = (terms.length - 1).toDouble();
+      final sliderValues =
+          _pendingRangeFor(sliderMax) ?? RangeValues(sliderStart.toDouble(), sliderEnd.toDouble());
 
       return Row(
         children: [
@@ -52,22 +56,20 @@ class _DateListWidgetState extends State<DateListWidget> {
               child: terms.length > 1
                   ? RangeSlider(
                       divisions: terms.length - 1,
-                      values: RangeValues(
-                        sliderStart.toDouble(),
-                        sliderEnd.toDouble(),
-                      ),
+                      values: sliderValues,
                       max: sliderMax,
                       labels: RangeLabels(
-                        '${sliderStart + 1}',
-                        '${sliderEnd + 1}',
+                        '${sliderValues.start.round() + 1}',
+                        '${sliderValues.end.round() + 1}',
                       ),
                       onChanged: (range) {
+                        setState(() => _pendingRange = range);
+                      },
+                      onChangeEnd: (range) {
                         final startIndex = range.start.round();
                         final endIndex = range.end.round();
-                        controller.filterTermsByIndexRange(
-                          startIndex,
-                          endIndex,
-                        );
+                        controller.filterTermsByIndexRange(startIndex, endIndex);
+                        setState(() => _pendingRange = null);
                       },
                     )
                   : const SizedBox.shrink(),
@@ -91,16 +93,11 @@ class _DateListWidgetState extends State<DateListWidget> {
                     onPressed: () => controller.toggleTermVisibility(i),
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundColor: colors[i % colors.length],
-                        ),
+                        CircleAvatar(radius: 8, backgroundColor: colors[i % colors.length]),
                         const SizedBox(width: 6),
                         Text(
                           (terms[i] as Las).dateTime.toString(),
-                          style: TextStyle(
-                            color: terms[i].show ? null : Colors.grey,
-                          ),
+                          style: TextStyle(color: terms[i].show ? null : Colors.grey),
                         ),
                       ],
                     ),
@@ -123,5 +120,14 @@ class _DateListWidgetState extends State<DateListWidget> {
     }
 
     return (visibleIndexes.first, visibleIndexes.last);
+  }
+
+  RangeValues? _pendingRangeFor(double sliderMax) {
+    final pendingRange = _pendingRange;
+    if (pendingRange == null || pendingRange.end > sliderMax) {
+      return null;
+    }
+
+    return pendingRange;
   }
 }

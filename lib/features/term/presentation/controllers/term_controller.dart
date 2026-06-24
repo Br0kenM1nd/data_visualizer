@@ -111,10 +111,12 @@ class TermController({
     final lower = startIndex <= endIndex ? startIndex : endIndex;
     final upper = startIndex <= endIndex ? endIndex : startIndex;
 
-    for (var i = 0; i < terms.length; i++) {
-      final shouldShow = i >= lower && i <= upper;
-      terms[i] = terms[i].copyWith(show: shouldShow);
-    }
+    terms.assignAll(
+      List<Term>.generate(terms.length, (index) {
+        final shouldShow = index >= lower && index <= upper;
+        return terms[index].copyWith(show: shouldShow);
+      }, growable: false),
+    );
   }
 
   void toggleAllDayThermograms() {
@@ -123,9 +125,13 @@ class TermController({
     }
 
     final showAll = terms.any((term) => !term.show);
-    for (var i = 0; i < terms.length; i++) {
-      terms[i] = terms[i].copyWith(show: showAll);
-    }
+    terms.assignAll(
+      List<Term>.generate(
+        terms.length,
+        (index) => terms[index].copyWith(show: showAll),
+        growable: false,
+      ),
+    );
   }
 
   bool get areAllThermogramsVisible => terms.isNotEmpty && terms.every((term) => term.show);
