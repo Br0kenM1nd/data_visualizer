@@ -4,9 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import 'calendar_controller.dart';
 
-class CalendarWidget extends StatelessWidget {
-  const CalendarWidget({super.key});
-
+class const CalendarWidget({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.isRegistered<CalendarController>()

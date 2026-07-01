@@ -1,7 +1,7 @@
 import 'dart:math';
 
 class TermChartDataSampler {
-  const TermChartDataSampler._();
+  const new _();
 
   static List<Point<double>> sample(
     List<Point<double>> points, {

@@ -5,7 +5,7 @@ import '../../core/logger/logger.dart';
 import '../../features/term/presentation/controllers/term_controller.dart';
 
 class CalendarController extends GetxController {
-  CalendarController({TermController? termController})
+  new({TermController? termController})
     : _termController = termController ?? Get.find<TermController>();
 
   final TermController _termController;

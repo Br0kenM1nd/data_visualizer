@@ -7,9 +7,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../features/term/presentation/controllers/term_controller.dart';
 import 'term_chart_data_sampler.dart';
 
-class TermWidget extends StatefulWidget {
-  const TermWidget({super.key});
-
+class const TermWidget({super.key}) extends StatefulWidget {
   static const String xAxisTitle = 'Расстояние, М';
   static const String yAxisTitle = 'Температура, °С';
   static const String xAxisName = 'distance';

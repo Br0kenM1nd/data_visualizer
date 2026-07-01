@@ -8,15 +8,10 @@ import '../datasources/data_source.dart';
 import '../parsers/las_parser.dart';
 import '../parsers/parser.dart';
 
-class TermRepositoryImpl implements TermRepositoryContract {
-  const TermRepositoryImpl({
-    this.source = const DataSource(),
-    this.parser = const LasParser(),
-  });
-
-  final DataSource source;
-  final Parser parser;
-
+class const TermRepositoryImpl({
+  final DataSource source = const DataSource(),
+  final Parser parser = const LasParser(),
+}) implements TermRepositoryContract {
   static List<Term> _terms = <Term>[];
 
   @override
@@ -93,15 +88,11 @@ class TermRepositoryImpl implements TermRepositoryContract {
     final points = await parser.getPoints(files);
 
     if (names.length != points.length || names.length != times.length) {
-      throw const FormatException(
-        'LAS parsing produced inconsistent array sizes',
-      );
+      throw const FormatException('LAS parsing produced inconsistent array sizes');
     }
 
     if (times.any((time) => time.millisecondsSinceEpoch == 0)) {
-      throw const FormatException(
-        'One or more LAS filenames have invalid datetime',
-      );
+      throw const FormatException('One or more LAS filenames have invalid datetime');
     }
 
     return List<Term>.generate(names.length, (i) {

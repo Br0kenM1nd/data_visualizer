@@ -8,9 +8,7 @@ import 'package:flutter/foundation.dart';
 import '../../../../core/logger/logger.dart';
 import 'parser.dart';
 
-class LasParser implements Parser {
-  const LasParser();
-
+class const LasParser() implements Parser {
   @override
   List<String> getNames(List<File> files) {
     return files

@@ -4,9 +4,7 @@ import 'package:get/get.dart';
 import '../features/term/presentation/controllers/term_controller.dart';
 import 'calendar/calendar_controller.dart';
 
-class TopBar extends StatelessWidget implements PreferredSizeWidget {
-  const TopBar({super.key});
-
+class const TopBar({super.key}) extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(30);
 

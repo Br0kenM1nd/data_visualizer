@@ -4,7 +4,7 @@ import 'dated.dart';
 import 'term.dart';
 
 class Las extends Term implements Dated {
-  const Las({
+  const new({
     required super.name,
     required super.points,
     required this.dateTime,

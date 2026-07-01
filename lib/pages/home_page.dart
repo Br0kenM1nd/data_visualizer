@@ -5,9 +5,7 @@ import '../widgets/chart/term_widget.dart';
 import '../widgets/date_list/date_list_widget.dart';
 import '../widgets/top_bar.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
+class const HomePage({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

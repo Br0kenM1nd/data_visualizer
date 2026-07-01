@@ -3,16 +3,9 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DirectorySelection {
-  const DirectorySelection({required this.path, required this.files});
+class const DirectorySelection({required final String path, required final List<File> files}) {}
 
-  final String path;
-  final List<File> files;
-}
-
-class DataSource {
-  const DataSource();
-
+class const DataSource() {
   static const String _lastDirectoryKey = 'last_selected_directory';
 
   Future<List<File>> pickDirs() async {

@@ -6,9 +6,7 @@ import '../../features/term/domain/entities/term.dart';
 import '../../features/term/presentation/controllers/term_controller.dart';
 import 'date_list_controller.dart';
 
-class DateListWidget extends StatefulWidget {
-  const DateListWidget({super.key});
-
+class const DateListWidget({super.key}) extends StatefulWidget {
   @override
   State<DateListWidget> createState() => _DateListWidgetState();
 }
