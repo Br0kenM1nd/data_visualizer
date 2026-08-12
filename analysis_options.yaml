@@ -42,6 +42,13 @@ analyzer:
     - '**.gr.dart'
     - '**/generated_plugin_registrant.dart'
     - test/.test_coverage.dart
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
   enable-experiment:
     - primary-constructors
